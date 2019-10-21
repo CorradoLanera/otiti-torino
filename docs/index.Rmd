@@ -99,17 +99,27 @@ This is a **joint work with** three other groups:
 class: inverse, middle
 # Outline
 
-Overview: classification of otitis
+Overview: otitis and text classification
 
-Task: multi-class classification
+<!-- Task: multi-class classification -->
 
-Database:<img src="images/logopedianet.png", width = "20%", align = "center">
+Programming paradigms: classical and machine learning
+
+Classical: search string and regular expression
+
+Shallow machine learning: document-text matrix
+
+Deep-learning: basics
+
+Embeddings: dense representation of text
+
+Database: <img src="images/logopedianet.png", width = "20%", align = "center">
 
 Metrics: scores and human-performances
 
 Project plan: flowchart
 
-Deep-learning approach: architectures explored
+Our approach: architectures explored
 
 Results
 

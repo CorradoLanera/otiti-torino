@@ -93,31 +93,33 @@ This is a **joint work with** three other groups:
 class: inverse, middle
 # Outline
 
-Overview: otitis and text classification
+1. **Overview**: otitis
+
+1. **Database and Task**: &lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
 
 &lt;!-- Task: multi-class classification --&gt;
 
-Programming paradigms: classical and machine learning
+1. **Programming paradigms**: classical and machine learning
 
-Classical: search string and regular expression
+1. **Classical text classification** search string and regular expression
 
-Shallow machine learning: document-text matrix
+1. **Shallow machine learning**: document-text matrix
 
-Deep-learning: basics
+1. **Neural networks**: basics
 
-Embeddings: dense representation of text
+1. **Embeddings**: dense representation of text
 
-Database: &lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
+1. **Deep networks**: convolutions, sequential/recurrent
 
-Metrics: scores and human-performances
+1. **Metrics**: scores and human-performances
 
-Project plan: flowchart
+1. **Project plan**: flowchart
 
-Our approach: architectures explored
+1. **Our approach**: architectures explored
 
-Results
+1. **Results**
 
-Final remarks and conclusions
+1. **Final remarks and conclusions**
 
 
 ???
@@ -140,10 +142,10 @@ some highlights.
 
 
 
+
 ---
 class: center, middle, inverse
 # **Overview**&lt;br&gt;classification of otitis
-
 
 
 
@@ -189,50 +191,33 @@ the **frequently little attention in following the guidlines**, like the
 **wait-and-see approach** that discourage early antibiotics prescription,
 reducing their usage and the adverse events associated with that.
 
+
 ---
 class: center, middle, inverse
-# **Task**&lt;br&gt;multi-class classification
-
-
+# **Database and Task**&lt;br&gt;&lt;img src="images/logopedianet.png", width = "40%", align = "center"&gt;
 
 
 ---
 class: middle
 
-Based on data provided in the EHRs at the visit level, decide if it reports:
+.center[&lt;img src="images/logopedianet.png", width = "50%"&gt;]
 
+&lt;big&gt;
+**snapshot considerd**: from 1st January 2004 to 23rd August 2017
 
-&lt;ol start="0"&gt;
+**records**: `\(6,903,035\)` `\(( 297,373\)` filtered by a search string `\()\)`
 
-&lt;li&gt;whatever other than an otitis case&lt;/li&gt;&lt;br&gt;
+**pediatricians**: `\(144\)` (troughout Italy)
 
-&lt;li&gt;an otitis case which is not media (whatever severity)&lt;/li&gt;&lt;br&gt;
+**children**: `\(216,976\)`
 
-&lt;li&gt;a media otitis which is not acute&lt;/li&gt;&lt;br&gt;
-
-&lt;li&gt;&lt;img src="images/aom.jpg", width = "15%", align = "center"&gt;
-  an AOM (w/o tympanic membrane perforation, nor recurrent)&lt;/li&gt;&lt;br&gt;
-  
-&lt;li&gt;&lt;img src="images/aom_perforation.jpg", width = "15%", align = "center"&gt;
-  an AOM with tympanic membrane perforation&lt;/li&gt;&lt;br&gt;
-
-&lt;li&gt;a recurrent AOM&lt;/li&gt;
-&lt;/ol&gt;
-
-.pull-right[
-.footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;http://otitismedia.hawkelibrary.com&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
-]
-
-
-
-
-
-
-
----
-class: center, middle, inverse
-# **Database**&lt;br&gt;&lt;img src="images/logopedianet.png", width = "40%", align = "center"&gt;
-
+**fields** (all free-text, Italian-language):
+- diagnosis
+- signs-and-symptoms
+- diary
+- prescription
+- visit description
+- visit result
 
 
 ---
@@ -271,27 +256,332 @@ the Pedianet records **automatically** investigating **all the textual
 fields** in the database.
 
 
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Programming paradigms**&lt;br&gt;classical and machine learning
+
+
+
+---
+class: middle, center
+
+&lt;img src="images/ml-paradigm.png", align = "center"&gt;
+
+
+---
+class: center, middle, inverse
+# **Classical text classification**&lt;br&gt;Search string and regular expression
+
+---
+class: center, middle
+
+
+.pull-left[
+# Search string
+
+One or several strings (also called patterns) founded within a larger string or text.
+
+&lt;img src="images/MeSH-example.svg.png", width = 70%,  align = "center"&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/MeSH-example.svg/1024px-MeSH-example.svg.png&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+
+&lt;img src="images/Boolean_operations_on_shapes_a.png", width = 40%,  align = "center"&gt;
+&lt;img src="images/Boolean_operations_on_shapes_b.png", width = 40%,  align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://it.wikipedia.org/wiki/File:Boolean_operations_on_shapes.png&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+]
+
+
+
+.pull-right[
+# Regular expressions
+
+A sequence of characters that define a search pattern
+
+&lt;img src="images/crossword_regex.png",  align = "center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://www.flickr.com/photos/bluesmoon/8458343489/in/photostream/&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+]
+
+
+
+
+---
+class: center, middle, inverse
+# **Shallow machine learning**&lt;br&gt;document-text matrix
+
+---
+
+- sparse representation (vector, matrix)
+- preprocessing
+- model definition
+- model update
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Neural networks**&lt;br&gt;basic structure
+
+---
+class: center, middle
+
+&lt;img src="images/neuron.gif", width = 90%, align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+.right[&lt;https://www.cs.iusb.edu/~danav/teach/c463/12_nn.html&gt;]
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+--
+&lt;br&gt;
+&lt;big&gt;
+&lt;big&gt;
+&lt;big&gt;
+&lt;big&gt;
+`\(g(\sum(w_ia_i))\)`
+
+
+
+---
+class: center, middle
+
+# Fully connect
+&lt;img src="images/fc.png", width = 70%, align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Artificial_neural_network.svg/860px-Artificial_neural_network.svg.png&gt;
+
+
+
+---
+class: top
+
+# .center[Learning]
+
+&lt;img src="images/deep_gradient.png", align = "center"&gt;
+
+.pull-left[
+1. Random inizialization
+1. Forward propagation
+1. Loss evaluation
+1. Back propagation
+1. Optimization and update
+]
+
+
+
+--
+
+.pull-right[
+&lt;img src="images/Gradient_descent.gif", align = "center"&gt;
+]
+&lt;small&gt;&lt;small&gt;&lt;small&gt;.right[
+&lt;https://upload.wikimedia.org/wikipedia/commons/a/a3/Gradient_descent.gif&gt;
+]
+
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Embeddings**&lt;br&gt;dense representation of text
+
+---
+class: center, middle
+
+&lt;img src="images/skip-gram.png", width = 70%, align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+.right[&lt;https://www.analyticsvidhya.com/blog/2017/06/word-embeddings-count-word2veec/&gt;]
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+
+---
+class: center, middle
+
+&lt;img src="images/fasttext-example.png", align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+.right[&lt;https://www.tensorflow.org/images/linear-relationships.png&gt;]
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+
+---
+class: center, middle, inverse
+# **Embeddings:**&lt;br&gt;sumulation
+
+
+&lt;https://ronxin.github.io/wevi/&gt;
+
+
+---
+class: center, middle, inverse
+# **Deep networks**&lt;br&gt;convolutions, sequential/recurrent
+
+
+---
+class: center, top
+
+# Convolution
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="images/CNN_example.png", align = "center"&gt;
+
+---
+class: center, top
+
+# Convolution
+
+&lt;br&gt;&lt;br&gt;
+&lt;img src="images/CNN_multiple.png", align = "center"&gt;
+
+
+---
+class: center, top
+
+# Sequential/Recurrent
+
+&lt;br&gt;
+&lt;img src="images/RNN-summary.png", align = "center"&gt;
+
+---
+class: center, top
+
+# Sequential/Recurrent
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="images/RNN-vs-LSTM-vs-GRU.png", align = "center"&gt;
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+.right[&lt;http://dprogrammer.org/rnn-lstm-gru&gt;]
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Task**&lt;br&gt;multi-class classification
+
+
+
+
 ---
 class: middle
 
-.center[&lt;img src="images/logopedianet.png", width = "50%"&gt;]
+Based on data provided in the EHRs at the visit level, decide if it reports:
 
+
+&lt;ol start="0"&gt;
+
+&lt;li&gt;whatever other than an otitis case&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;an otitis case which is not media (whatever severity)&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;a media otitis which is not acute&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;&lt;img src="images/aom.jpg", width = "15%", align = "center"&gt;
+  an AOM (w/o tympanic membrane perforation, nor recurrent)&lt;/li&gt;&lt;br&gt;
+  
+&lt;li&gt;&lt;img src="images/aom_perforation.jpg", width = "15%", align = "center"&gt;
+  an AOM with tympanic membrane perforation&lt;/li&gt;&lt;br&gt;
+
+&lt;li&gt;a recurrent AOM&lt;/li&gt;
+&lt;/ol&gt;
+
+.pull-right[
+.footnote[&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;http://otitismedia.hawkelibrary.com&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;]
+]
+
+
+
+---
+class: center, middle, inverse
+# **Metrics**&lt;br&gt;scores and human-performances
+
+
+
+
+---
+class: middle
+
+Gold-standard definition:
+  - two independent expert annotators (weighted Cohen's Kappa = `\(0.89\)`)
+  - one pediatrician specialized in infectious diseases decided where the experts shown disagreement:*
+
+Expert annotators | Accuracy [%] | Balanced F1 [%]
+:--------------: | :----------: | :-------------:
+       A         |     95.91    |       93.47
+       B         |     95.80    |       90.12
+
+
+.pull-left[
 &lt;big&gt;
-**snapshot considerd**: from 1st January 2004 to 23rd August 2017
+`\(\text{Accuracy} = \frac{|\text{true classified}|}{|\text{records}|}\)`
 
-**records**: `\(6,903,035\)` `\((297,373\)` filtered by a search string `\()\)`
+`\(\text{Balanced F1} = \frac{\text{balanced precision} \cdot \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}\)`
 
-**pediatricians**: `\(144\)` (troughout Italy)
+`\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true classified as }i|}{|\text{labelled as }i|}}{|\text{classes}|}\)`
 
-**children**: `\(216,976\)`
+`\(\text{Balanced recall} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true classified as }i|}{|\text{class }i|}}{|\text{classes}|}\)`
+]
 
-**fields** (all free-text, Italian-language):
-- diagnosis
-- signs-and-symptoms
-- diary
-- prescription
-- visit description
-- visit result
+.pull-right[&lt;small&gt;&lt;small&gt;
+
+  *Performances reported for the test set.
+  &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+  .right[&lt;img src="images/Recall-precision.svg.png", width = 67%, align = "center"&gt;]
+  
+&lt;/small&gt;&lt;/small&gt;]
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Analysis plan**&lt;br&gt;flowchart
+
 
 
 ---
@@ -321,53 +611,6 @@ Records: `\(880\)`
 
 &lt;small&gt;
 (NOTE: 4 months of annotatotion, by 2 independent experts)
-
-
----
-class: center, middle, inverse
-# **Metrics**&lt;br&gt;scores and human-performances
-
-
-
-
----
-class: middle
-
-Gold-standard definition:
-  - two independent expert annotators (weighted Cohen's Kappa = `\(0.89\)`)
-  - one pediatrician specialized in infectious diseases decided where the experts shown disagreement:*
-
-Expert annotators | Accuracy [%] | Balanced F1 [%]
-:--------------: | :----------: | :-------------:
-       A         |     95.91    |       93.47
-       B         |     95.80    |       90.12
-
-
-
-`\(\text{Accuracy} = \frac{|\text{true positives}|}{|\text{records}|}\)`
-
-`\(\text{Balanced F1} = \frac{\text{balanced precision} \cdot \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}\)`
-
-`\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{labelled like }i|}}{|\text{classes}|}\)`
-
-`\(\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{class }i|}}{|\text{classes}|}\)`
-
-
-.pull-right[&lt;small&gt;&lt;small&gt;
-  *Performances reported for the test set.
-&lt;/small&gt;&lt;/small&gt;]
-
-
-
-
-
-
-
-
----
-class: center, middle, inverse
-# **Analysis plan**&lt;br&gt;flowchart
-
 
 
 
@@ -462,11 +705,8 @@ class: middle
 .pull-right[
 ## .center[Weakness]
 - our human-performance estimation is not based at the professional levels
-- missing of computational power (i.e, GPUs) for deeper networks, e.g., 
-
-  - recurrent
-  - BERT
-  - XLNet
+- missing of computational power (i.e, GPUs) for deeper networks, e.g.,
+  recurrent
 ]
 
 ## .center[Possible improvement]

@@ -1,0 +1,520 @@
+---
+title: "Automatic identification and classification of different types of otitis from free-text pediatric medical notes: a deep-learning approach"
+subtitle: "**presented @YSM - Basovizza**"
+author: "_Corrado Lanera_"
+institute: "Unit of Biostatistics, Epidemiology, and Public Health<br>Department of Cardiac, Thoracic, Vascular Sciences, and Public Health<br>University of Padova (IT)"
+date: "2019/06/20 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    seal: false
+    lib_dir: libs
+    self_contained: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: center, middle, and title-slide
+background-image: url("images/bg.png")
+background-position: top
+background-size: contain
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# Automatic identification and classification of different types of otitis from<br>free-text pediatric medical notes:<br>a deep-learning approach
+
+**Corrado Lanera**\*<sup>1</sup>, Elisa Barbieri<sup>2</sup>, Gianluca Piras<sup>1</sup>, Arjun Maggie<sup>3</sup>, Davy Weissenbacher<sup>3</sup>, Daniele Dona<sup>2</sup>, Luigi Cantarutti<sup>4</sup>, Graciela Gonzalez<sup>3</sup>,<br>Carlo Giaquinto<sup>2,4</sup>, and Dario Gregori<sup>1</sup>
+
+.left[
+<small>\*<corrado.lanera@unipd.it><br><br></small>
+2019/10/19 - YSM (Basoviza)
+]
+
+
+
+<br>
+<br>
+
+.left[
+<small>
+<small>
+<small>
+<small>
+<sup>1</sup> Unit of Biostatistics, Epidemiology, and Public Health of the Department of Cardiac-Thoracic-Vascular Sciences and Public Health – University of Padova<br>
+<sup>2</sup> Division of Pediatric Infectious Diseases, Department for Woman and Child Health, University of Padua, Padua, Italy<br>
+<sup>3</sup> Health Language Processing Center, Institute for Biomedical Informatics of the Perelman School of Medicine – University of Pennsylvania<br>
+<sup>4</sup> Società Servizi Telematici – Pedianet<br>
+</small>
+</small>
+</small>
+</small>
+]
+
+
+???
+
+Good moarning, I am Corrado Lanera and I have just finished my third
+year Ph.D. at the Unit of Biostatistics, Epidemiology and Public Health,
+at the University of Padova.
+
+Today I will present you an **overview of the final work** inlcuded in my 
+dissertation, that aims to identify and classsify different types of 
+otitis automatically and using only free-text from prediatric medical 
+reports. 
+
+This is a **joint work with** three other groups:
+ 
+ - the **Pedianet** society which collected and provided the data;
+ - the **Division of Pediatric Infectious Diseases** of the university
+   of Padova which created the gold standard, motivated the study and 
+   analyzed the results from the clinical point of view
+   
+ - and **Health Language Processing Center** at the University of
+   Pennsylvania, in wich I have spent my visiting period during the
+   Ph.D., and where I have developed all the computational aspects of 
+   the analyses
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class: inverse, middle
+# Outline
+
+Overview: classification of otitis
+
+Task: multi-class classification
+
+Database:<img src="images/logopedianet.png", width = "20%", align = "center">
+
+Metrics: scores and human-performances
+
+Project plan: flowchart
+
+Deep-learning approach: architectures explored
+
+Results
+
+Final remarks and conclusions
+
+
+???
+
+So, we will start with a quick overview on the otitis and the importance
+of their classification.
+
+Next, we will describe which classes we are interested to classify and 
+we will explore the main details of the database we used.
+
+To evaluate any models, we need some metrics, so, before to describe the
+flowchart we adopted for the analyses, we will explore teh metrics and 
+the reference we considered.
+
+After that we will show the deep-learning architectures explored and 
+trained to create teh final ensamble model.
+
+At the end we conclude reporting the results achieved, concluding with 
+some highlights.
+
+
+
+---
+class: center, middle, inverse
+# **Overview**<br>classification of otitis
+
+
+
+
+---
+class: middle
+
+<img src="images/Otitis_Media.png", width = "75%", align = "right">
+
+- one of the most common infections in pediatrics
+  
+- the main cause of antibiotic prescriptions
+
+- challenging diagnosis
+
+- frequently, little attention is paid to the guidelines
+
+- continuing interest in defining the incidence and burden of AOM
+
+.right[
+<br>
+<small><small><small><small>https://commons.wikimedia.org/wiki/File:Otitis_Media.png</small></small></small></small>
+<br>
+<small><small><small><small>\*Marchisio P. et al. "Burden of acute otitis media in primary care pediatrics in Italy: a secondary data analysis from the Pedianet database", **BMC Pediatrics** 2012.</small></small></small></small>
+<br>
+<small><small><small><small>\*Spiro DM, Arnold, DH. "The concept and practice of a wait-and-see approach to acute otitis media.", **Current Opinion in Pediatrics** 2008</small></small></small></small>
+]
+
+
+???
+
+- Otitis media is one of the **most common infections in pediatrics**
+  population.
+
+- It is an **inflamamtion with possible fluid accumulation** in the
+  middle ear
+
+- and there is continuing interest in defining the incidence and the
+  burden of acute cases, being one of the main cause of antibiotics
+  prescriptions in children.
+  
+- This is also highlighted by the **chellenges in the diagnoses** and by 
+the **frequently little attention in following the guidlines**, like the
+**wait-and-see approach** that discourage early antibiotics prescription,
+reducing their usage and the adverse events associated with that.
+
+---
+class: center, middle, inverse
+# **Task**<br>multi-class classification
+
+
+
+
+---
+class: middle
+
+Based on data provided in the EHRs at the visit level, decide if it reports:
+
+
+<ol start="0">
+
+<li>whatever other than an otitis case</li><br>
+
+<li>an otitis case which is not media (whatever severity)</li><br>
+
+<li>a media otitis which is not acute</li><br>
+
+<li><img src="images/aom.jpg", width = "15%", align = "center">
+  an AOM (w/o tympanic membrane perforation, nor recurrent)</li><br>
+  
+<li><img src="images/aom_perforation.jpg", width = "15%", align = "center">
+  an AOM with tympanic membrane perforation</li><br>
+
+<li>a recurrent AOM</li>
+</ol>
+
+.pull-right[
+.footnote[<small><small><small><small>http://otitismedia.hawkelibrary.com</small></small></small></small>]
+]
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Database**<br><img src="images/logopedianet.png", width = "40%", align = "center">
+
+
+
+---
+class: middle
+
+<img src="images/barbieri2019.png", width = "32%", align = "right">
+
+<big><big>
+
+2019 <img src="images/logopedianet.png", width = "20%", align = "center"> investigation
+
+- data from 2010 to 2015 
+
+- **on primary diagnosis only**
+
+Adding even the diaries in a traditional manual human-driven analysis proved to be 
+**too costly** in terms both of person-time and economic resources
+
+
+It is necessary to develop an **accurate** system able to classify all
+the <img src="images/logopedianet.png", width = "15%", align = "center"> records **automatically** investigating **all the textual
+fields** in the database.
+
+<small><small><small><small><small><small>\*Barbieri et.al "Antibiotic prescriptions in acute otitis media and pharyngitis in Italian pediatric outpatients", **Italian J. of Pediatrics** 2019</small></small></small></small></small></small>
+
+
+???
+
+Pedianet was investigated in 2019 by Barbieri et.al\* on data from 
+2010 to 2015 for similar task **on primary diagnosis only**: adding even
+the diaries in a traditional manual human-driven analysis proved to be 
+too costly in terms both of person-time (years) and economic resources
+
+It is necessary to develop an **accurate** system able to classify all
+the Pedianet records **automatically** investigating **all the textual
+fields** in the database.
+
+
+---
+class: middle
+
+.center[<img src="images/logopedianet.png", width = "50%">]
+
+<big>
+**snapshot considerd**: from 1st January 2004 to 23rd August 2017
+
+**records**: $6,903,035$ $(297,373$ filtered by a search string $)$
+
+**pediatricians**: $144$ (troughout Italy)
+
+**children**: $216,976$
+
+**fields** (all free-text, Italian-language):
+- diagnosis
+- signs-and-symptoms
+- diary
+- prescription
+- visit description
+- visit result
+
+
+---
+class: middle, center
+
+<big><big>
+# Gold Standard
+
+.pull-left[
+## **Train**
+Years: $2004-2007$
+
+Records: $4,926$
+]
+
+.pull-right[
+## **Validation**
+Years: $2008-2017$
+
+Records: $723$
+]
+
+## **Test**
+Years: $2008-2017$
+
+Records: $880$
+
+<small>
+(NOTE: 4 months of annotatotion, by 2 independent experts)
+
+
+---
+class: center, middle, inverse
+# **Metrics**<br>scores and human-performances
+
+
+
+
+---
+class: middle
+
+Gold-standard definition:
+  - two independent expert annotators (weighted Cohen's Kappa = $0.89$)
+  - one pediatrician specialized in infectious diseases decided where the experts shown disagreement:*
+
+Expert annotators | Accuracy [%] | Balanced F1 [%]
+:--------------: | :----------: | :-------------:
+       A         |     95.91    |       93.47
+       B         |     95.80    |       90.12
+
+
+
+$\text{Accuracy} = \frac{|\text{true positives}|}{|\text{records}|}$
+
+$\text{Balanced F1} = \frac{\text{balanced precision} \cdot \text{balanced recall}}{\text{balanced precision} + \text{balanced recall}}$
+
+$\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{labelled like }i|}}{|\text{classes}|}$
+
+$\text{Balanced precision} = \frac{\sum_{i\in\text{classes}}\frac{|\text{true positives in }i|}{|\text{class }i|}}{|\text{classes}|}$
+
+
+.pull-right[<small><small>
+  *Performances reported for the test set.
+</small></small>]
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Analysis plan**<br>flowchart
+
+
+
+
+---
+class: center, middle
+<img src="images/flowchart_otiti.png", width = "60%", align = "center">
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Deep-learning approach**<br>architecture explored
+
+
+
+---
+class: top
+
+<img src="images/architectures.png", width = "90%", align = "center">
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Results**
+
+
+
+
+---
+class: middle
+
+Network          | Balanced<br>precision | Balanced<br>recall |  Accuracy | Balanced<br>F1
+---------------- | :-------------------: | :----------------: |  :------: | :------------:
+Simple Embedding |         84.51         |        68.63       |   81.70   |      75.75
+Single Kernel    |         92.60         |       _91.87_      |   94.66   |     _92.23_
+Sequential CNN   |        _95.94_        |        81.26       |   93.64   |      87.99
+Parallel CNN     |       **96.95**       |       _94.78_      | **96.59** |    **95.86**
+Deep CNN         |       **96.38**       |       _93.36_      | **96.25** |    **94.85**
+Ensemble<br>(w/o Simple Embeddings)|**97.03**|   _93.97_      | **96.59** |    **95.47**
+
+.pull-right[
+  \* **Bold face** = over the maximum <br>
+  \* _italic_ = over the mean
+]
+
+  Annotators     | Balanced<br>precision | Balanced<br>recall |  Accuracy | Balanced<br>F1
+:--------------: | :-------------------: | :----------------: |  :------: | :------------:
+       A         |         91.70         |        95.30       |    95.91  |      93.47 
+       B         |         96.33         |        84.66       |    95.80  |      90.12 
+    (mean)       |        (94.02)        |       (89.98)      |   (95.86) |     (91.80)
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+# **Final remarks**
+
+
+
+
+---
+class: middle
+
+.pull-left[
+## .center[Strenghts]
+- embedding: no more needs to hand-craft features
+- deep learning:
+  - automatical detection and modeling of non linearities and
+    interactions
+  - update models w/ new data
+  - use pre-trained or merge multiple models
+  - can take advantage of more data than shallow models
+]
+
+.pull-right[
+## .center[Weakness]
+- our human-performance estimation is not based at the professional levels
+- missing of computational power (i.e, GPUs) for deeper networks, e.g., 
+
+  - recurrent
+  - BERT
+  - XLNet
+]
+
+## .center[Possible improvement]
+
+- improve the gold standard:
+  - quality  (human-performance level)
+  - accuracy (error analyses)
+  - quantity (more training records / active learning)
+- deeper networks / advanced architectures
+- different weighting schemes for the ensamble
+
+---
+class: center, middle, inverse
+# **Conclusions**
+
+
+
+
+---
+class: middle
+
+# Deep Learning Approach to Text-Mining EHR
+
+- Can be used to identifying and classifying diagnosis from (huge
+  ammount of) free text
+  
+- Quality comparable with human-performances
+
+- Trained models can be adopted on other health care databases,
+  different from the original one
+
+- It can improve healthcare research limiting human errors and time,
+speeding up databases interrogations
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, inverse
+<br>
+<br>
+<br>
+
+# **Thank you<br>for the attention**<br><br><br><br> Questions?
+
+<br>
+<br>
+<br>
+
+<small><small><small>Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan) powered by [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).

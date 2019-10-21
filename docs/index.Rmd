@@ -1,9 +1,9 @@
 ---
-title: "Automatic identification and classification of different types of otitis from free-text pediatric medical notes: a deep-learning approach"
-subtitle: "**presented @YSM - Basovizza**"
+title: "Deep learning algorithms for automatic classification of electronic medical records starting from free text"
+subtitle: "**presented at the University of Torino**"
 author: "_Corrado Lanera_"
 institute: "Unit of Biostatistics, Epidemiology, and Public Health<br>Department of Cardiac, Thoracic, Vascular Sciences, and Public Health<br>University of Padova (IT)"
-date: "2019/06/20 (updated: `r Sys.Date()`)"
+date: "2019/10/22 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     seal: false
@@ -23,13 +23,13 @@ background-size: contain
 options(htmltools.dir.version = FALSE)
 ```
 
-# Automatic identification and classification of different types of otitis from<br>free-text pediatric medical notes:<br>a deep-learning approach
+# Deep learning algorithms for<br>automatic classification of electronic medical records<br>starting from free text
 
 **Corrado Lanera**\*<sup>1</sup>, Elisa Barbieri<sup>2</sup>, Gianluca Piras<sup>1</sup>, Arjun Maggie<sup>3</sup>, Davy Weissenbacher<sup>3</sup>, Daniele Dona<sup>2</sup>, Luigi Cantarutti<sup>4</sup>, Graciela Gonzalez<sup>3</sup>,<br>Carlo Giaquinto<sup>2,4</sup>, and Dario Gregori<sup>1</sup>
 
 .left[
 <small>\*<corrado.lanera@unipd.it><br><br></small>
-2019/10/19 - YSM (Basoviza)
+2019/10/22 - University of Torino
 ]
 
 

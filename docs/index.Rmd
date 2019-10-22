@@ -14,7 +14,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: center, middle, and title-slide
+class: center, top, and title-slide
 background-image: url("images/bg.png")
 background-position: top
 background-size: contain
@@ -23,19 +23,17 @@ background-size: contain
 options(htmltools.dir.version = FALSE)
 ```
 
-# Deep learning algorithms for<br>automatic classification of electronic medical records<br>starting from free text
+# Deep learning algorithms for<br>automatic classification of<br>electronic medical records<br>starting from free text
 
 **Corrado Lanera**\*<sup>1</sup>, Elisa Barbieri<sup>2</sup>, Gianluca Piras<sup>1</sup>, Arjun Maggie<sup>3</sup>, Davy Weissenbacher<sup>3</sup>, Daniele Dona<sup>2</sup>, Luigi Cantarutti<sup>4</sup>, Graciela Gonzalez<sup>3</sup>,<br>Carlo Giaquinto<sup>2,4</sup>, and Dario Gregori<sup>1</sup>
 
 .left[
-<small>\*<corrado.lanera@unipd.it><br><br></small>
-2019/10/22 - University of Torino
+<small><small>
+2019/10/22 - @University of Torino - Department of Clinical and Biological Sciences<br><br>
+\*<corrado.lanera@unipd.it><br>Biomedicine Data Mining and Artificial Intelligence Lab
+</small></small><br><br><br>
 ]
 
-
-
-<br>
-<br>
 
 .left[
 <small>
@@ -103,8 +101,6 @@ class: inverse, middle
 
 1. **Database and Task**: <img src="images/logopedianet.png", width = "20%", align = "center">
 
-<!-- Task: multi-class classification -->
-
 1. **Programming paradigms**: classical and machine learning
 
 1. **Classical text classification** search string and regular expression
@@ -117,15 +113,13 @@ class: inverse, middle
 
 1. **Deep networks**: convolutions, sequential/recurrent
 
-1. **Metrics**: scores and human-performances
+1. **Task & metrics**: multi-class, scores and human-performances
 
-1. **Project plan**: flowchart
+1. **Analyses plan**: flowchart
 
 1. **Our approach**: architectures explored
 
-1. **Results**
-
-1. **Final remarks and conclusions**
+1. **Results, final remarks and conclusions**
 
 
 ???
@@ -203,6 +197,11 @@ class: center, middle, inverse
 # **Database and Task**<br><img src="images/logopedianet.png", width = "40%", align = "center">
 
 
+.center[A. Kao, S. Poteet (2007) **Text Mining: the discovery and the extraction of
+interesting, non-trivial knowledge from free or unstructured
+text.**]
+
+
 ---
 class: middle
 
@@ -276,12 +275,16 @@ class: center, middle, inverse
 ---
 class: middle, center
 
+
 <img src="images/ml-paradigm.png", align = "center">
+
+Arthur Samuel (1959). **Machine Learning: Field of study that gives computers the ability to learn without being explicitly programmed.**
 
 
 ---
 class: center, middle, inverse
 # **Classical text classification**<br>Search string and regular expression
+
 
 ---
 class: center, middle
@@ -326,15 +329,91 @@ A sequence of characters that define a search pattern
 ---
 class: center, middle, inverse
 # **Shallow machine learning**<br>document-text matrix
+---
+class: middle
+
+# Preprocessing
+
+- **removing** (removes noise):
+  - remove non-word text
+  - remove stopwords
+  - strip whitespace
+
+- **merging** (reduce the risk to allow important information to become noise because they are dispersed):
+  - lowering
+  - stemming
+  - lemmatization
+
+- **producing** (from words to “tokens”, i.e. single indivisible piece of information to bring information which could be lost otherwise, e.g. negations):
+  - n-Grams (consecutive sequences of n words)
 
 ---
+class: middle
 
-- sparse representation (vector, matrix)
-- preprocessing
-- model definition
-- model update
+# Sparse representation
+
+<img src="images/1_zFzLwr9kMiuT5FH9TPwd-Q.png", width = 80%  align = "center">
+
+<small><small><small>
+<https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c>
+</small></small></small>
+
+---
+class: middle
+
+# Document-term matrix
+
+<img src="images/download.png",  align = "center">
 
 
+---
+class: middle
+
+
+<img src="images/Classification-vs-Regression1.png",  align = "center">
+
+
+<small><small><small>.right[
+<https://vinodsblog.com/2018/11/08/classification-and-regression-demystified-in-machine-learning/>]
+
+
+
+---
+class: middle, center
+
+# (Shallow) Model definition
+.pull-left[
+Logistic regression 
+<img src="images/Exam_pass_logistic_curve.jpeg", width = 65%,  align = "center">
+
+<small><small><small><small>
+<https://commons.wikimedia.org/wiki/File:Exam_pass_logistic_curve.jpeg>
+</small></small></small></small>
+
+
+k-nearest neighbor
+<img src="images/KnnClassification.svg.png", width = 50%,  align = "center">
+
+<small><small><small>
+<https://it.m.wikipedia.org/wiki/File:KnnClassification.svg>
+</small></small></small>
+]
+
+
+.pull-right[
+support-vector machine
+<img src="images/Kernel_Machine.png",  align = "center">
+
+<small><small><small>
+<https://commons.wikimedia.org/wiki/File:Kernel_Machine.png>
+</small></small></small>
+
+random forest (decision tree)
+<img src="images/1_e18v-2-EabQTp_Bj92fkYA.png", width = 100%, align = "center">
+
+<small><small><small><small><small><small>
+<https://towardsdatascience.com/random-forests-and-decision-trees-from-scratch-in-python-3e4fa5ae4249>
+]
 
 
 
@@ -352,19 +431,21 @@ class: center, middle, inverse
 ---
 class: center, middle
 
+
+# (Artificial) Neuron
+
 <img src="images/neuron.gif", width = 90%, align = "center">
 
 <small><small><small><small>
 .right[<https://www.cs.iusb.edu/~danav/teach/c463/12_nn.html>]
 </small></small></small></small>
 
---
 <br>
 <big>
 <big>
 <big>
 <big>
-$g(\sum(w_ia_i))$
+$=g(\sum(w_ia_i))$
 
 
 
@@ -384,6 +465,8 @@ class: top
 
 # .center[Learning]
 
+.center[Tom Mitchell (1998). **Well-posed Learning Problem: A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.**]
+
 <img src="images/deep_gradient.png", align = "center">
 
 .pull-left[
@@ -394,9 +477,6 @@ class: top
 1. Optimization and update
 ]
 
-
-
---
 
 .pull-right[
 <img src="images/Gradient_descent.gif", align = "center">
@@ -440,7 +520,7 @@ class: center, middle
 
 ---
 class: center, middle, inverse
-# **Embeddings:**<br>sumulation
+# **Embeddings**<br>sumulation
 
 
 <https://ronxin.github.io/wevi/>
@@ -468,13 +548,6 @@ class: center, top
 <img src="images/CNN_multiple.png", align = "center">
 
 
----
-class: center, top
-
-# Sequential/Recurrent
-
-<br>
-<img src="images/RNN-summary.png", align = "center">
 
 ---
 class: center, top
@@ -497,6 +570,13 @@ class: center, top
 .right[<http://dprogrammer.org/rnn-lstm-gru>]
 
 
+---
+class: center, top
+
+# Sequential/Recurrent
+
+<br>
+<img src="images/RNN-summary.png", align = "center">
 
 
 

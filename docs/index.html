@@ -10,26 +10,24 @@
   <body>
     <textarea id="source">
 
-class: center, middle, and title-slide
+class: center, top, and title-slide
 background-image: url("images/bg.png")
 background-position: top
 background-size: contain
 
 
 
-# Deep learning algorithms for&lt;br&gt;automatic classification of electronic medical records&lt;br&gt;starting from free text
+# Deep learning algorithms for&lt;br&gt;automatic classification of&lt;br&gt;electronic medical records&lt;br&gt;starting from free text
 
 **Corrado Lanera**\*&lt;sup&gt;1&lt;/sup&gt;, Elisa Barbieri&lt;sup&gt;2&lt;/sup&gt;, Gianluca Piras&lt;sup&gt;1&lt;/sup&gt;, Arjun Maggie&lt;sup&gt;3&lt;/sup&gt;, Davy Weissenbacher&lt;sup&gt;3&lt;/sup&gt;, Daniele Dona&lt;sup&gt;2&lt;/sup&gt;, Luigi Cantarutti&lt;sup&gt;4&lt;/sup&gt;, Graciela Gonzalez&lt;sup&gt;3&lt;/sup&gt;,&lt;br&gt;Carlo Giaquinto&lt;sup&gt;2,4&lt;/sup&gt;, and Dario Gregori&lt;sup&gt;1&lt;/sup&gt;
 
 .left[
-&lt;small&gt;\*&lt;corrado.lanera@unipd.it&gt;&lt;br&gt;&lt;br&gt;&lt;/small&gt;
-2019/10/22 - University of Torino
+&lt;small&gt;&lt;small&gt;
+2019/10/22 - @University of Torino - Department of Clinical and Biological Sciences&lt;br&gt;&lt;br&gt;
+\*&lt;corrado.lanera@unipd.it&gt;&lt;br&gt;Biomedicine Data Mining and Artificial Intelligence Lab
+&lt;/small&gt;&lt;/small&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 ]
 
-
-
-&lt;br&gt;
-&lt;br&gt;
 
 .left[
 &lt;small&gt;
@@ -97,8 +95,6 @@ class: inverse, middle
 
 1. **Database and Task**: &lt;img src="images/logopedianet.png", width = "20%", align = "center"&gt;
 
-&lt;!-- Task: multi-class classification --&gt;
-
 1. **Programming paradigms**: classical and machine learning
 
 1. **Classical text classification** search string and regular expression
@@ -111,15 +107,13 @@ class: inverse, middle
 
 1. **Deep networks**: convolutions, sequential/recurrent
 
-1. **Metrics**: scores and human-performances
+1. **Task &amp; metrics**: multi-class, scores and human-performances
 
-1. **Project plan**: flowchart
+1. **Analyses plan**: flowchart
 
 1. **Our approach**: architectures explored
 
-1. **Results**
-
-1. **Final remarks and conclusions**
+1. **Results, final remarks and conclusions**
 
 
 ???
@@ -197,6 +191,11 @@ class: center, middle, inverse
 # **Database and Task**&lt;br&gt;&lt;img src="images/logopedianet.png", width = "40%", align = "center"&gt;
 
 
+.center[A. Kao, S. Poteet (2007) **Text Mining: the discovery and the extraction of
+interesting, non-trivial knowledge from free or unstructured
+text.**]
+
+
 ---
 class: middle
 
@@ -270,12 +269,16 @@ class: center, middle, inverse
 ---
 class: middle, center
 
+
 &lt;img src="images/ml-paradigm.png", align = "center"&gt;
+
+Arthur Samuel (1959). **Machine Learning: Field of study that gives computers the ability to learn without being explicitly programmed.**
 
 
 ---
 class: center, middle, inverse
 # **Classical text classification**&lt;br&gt;Search string and regular expression
+
 
 ---
 class: center, middle
@@ -320,15 +323,91 @@ A sequence of characters that define a search pattern
 ---
 class: center, middle, inverse
 # **Shallow machine learning**&lt;br&gt;document-text matrix
+---
+class: middle
+
+# Preprocessing
+
+- **removing** (removes noise):
+  - remove non-word text
+  - remove stopwords
+  - strip whitespace
+
+- **merging** (reduce the risk to allow important information to become noise because they are dispersed):
+  - lowering
+  - stemming
+  - lemmatization
+
+- **producing** (from words to “tokens”, i.e. single indivisible piece of information to bring information which could be lost otherwise, e.g. negations):
+  - n-Grams (consecutive sequences of n words)
 
 ---
+class: middle
 
-- sparse representation (vector, matrix)
-- preprocessing
-- model definition
-- model update
+# Sparse representation
+
+&lt;img src="images/1_zFzLwr9kMiuT5FH9TPwd-Q.png", width = 80%  align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+---
+class: middle
+
+# Document-term matrix
+
+&lt;img src="images/download.png",  align = "center"&gt;
 
 
+---
+class: middle
+
+
+&lt;img src="images/Classification-vs-Regression1.png",  align = "center"&gt;
+
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;.right[
+&lt;https://vinodsblog.com/2018/11/08/classification-and-regression-demystified-in-machine-learning/&gt;]
+
+
+
+---
+class: middle, center
+
+# (Shallow) Model definition
+.pull-left[
+Logistic regression 
+&lt;img src="images/Exam_pass_logistic_curve.jpeg", width = 65%,  align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://commons.wikimedia.org/wiki/File:Exam_pass_logistic_curve.jpeg&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+
+k-nearest neighbor
+&lt;img src="images/KnnClassification.svg.png", width = 50%,  align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://it.m.wikipedia.org/wiki/File:KnnClassification.svg&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+]
+
+
+.pull-right[
+support-vector machine
+&lt;img src="images/Kernel_Machine.png",  align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://commons.wikimedia.org/wiki/File:Kernel_Machine.png&gt;
+&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
+
+random forest (decision tree)
+&lt;img src="images/1_e18v-2-EabQTp_Bj92fkYA.png", width = 100%, align = "center"&gt;
+
+&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
+&lt;https://towardsdatascience.com/random-forests-and-decision-trees-from-scratch-in-python-3e4fa5ae4249&gt;
+]
 
 
 
@@ -346,19 +425,21 @@ class: center, middle, inverse
 ---
 class: center, middle
 
+
+# (Artificial) Neuron
+
 &lt;img src="images/neuron.gif", width = 90%, align = "center"&gt;
 
 &lt;small&gt;&lt;small&gt;&lt;small&gt;&lt;small&gt;
 .right[&lt;https://www.cs.iusb.edu/~danav/teach/c463/12_nn.html&gt;]
 &lt;/small&gt;&lt;/small&gt;&lt;/small&gt;&lt;/small&gt;
 
---
 &lt;br&gt;
 &lt;big&gt;
 &lt;big&gt;
 &lt;big&gt;
 &lt;big&gt;
-`\(g(\sum(w_ia_i))\)`
+`\(=g(\sum(w_ia_i))\)`
 
 
 
@@ -378,6 +459,8 @@ class: top
 
 # .center[Learning]
 
+.center[Tom Mitchell (1998). **Well-posed Learning Problem: A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.**]
+
 &lt;img src="images/deep_gradient.png", align = "center"&gt;
 
 .pull-left[
@@ -388,9 +471,6 @@ class: top
 1. Optimization and update
 ]
 
-
-
---
 
 .pull-right[
 &lt;img src="images/Gradient_descent.gif", align = "center"&gt;
@@ -434,7 +514,7 @@ class: center, middle
 
 ---
 class: center, middle, inverse
-# **Embeddings:**&lt;br&gt;sumulation
+# **Embeddings**&lt;br&gt;sumulation
 
 
 &lt;https://ronxin.github.io/wevi/&gt;
@@ -462,13 +542,6 @@ class: center, top
 &lt;img src="images/CNN_multiple.png", align = "center"&gt;
 
 
----
-class: center, top
-
-# Sequential/Recurrent
-
-&lt;br&gt;
-&lt;img src="images/RNN-summary.png", align = "center"&gt;
 
 ---
 class: center, top
@@ -491,6 +564,13 @@ class: center, top
 .right[&lt;http://dprogrammer.org/rnn-lstm-gru&gt;]
 
 
+---
+class: center, top
+
+# Sequential/Recurrent
+
+&lt;br&gt;
+&lt;img src="images/RNN-summary.png", align = "center"&gt;
 
 
 
